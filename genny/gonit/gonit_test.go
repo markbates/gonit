@@ -1,10 +1,9 @@
 package gonit
 
 import (
-	"context"
 	"testing"
 
-	"github.com/gobuffalo/genny"
+	"github.com/gobuffalo/genny/gentest"
 	"github.com/stretchr/testify/require"
 )
 
@@ -14,16 +13,17 @@ func Test_New(t *testing.T) {
 	g, err := New(&Options{})
 	r.NoError(err)
 
-	run := genny.DryRunner(context.Background())
-	run.With(g)
+	run := gentest.NewRunner()
+	run.WithGroup(g)
 
 	r.NoError(run.Run())
 
 	res := run.Results()
 
-	r.Len(res.Commands, 0)
-  r.Len(res.Files, 1)
+	r.Len(res.Commands, 5)
+	r.Len(res.Files, 4)
 
-  f := res.Files[0]
-  r.Equal("example.txt", f.Name())
+	f := res.Files[0]
+	r.Equal(".gitignore", f.Name())
+
 }

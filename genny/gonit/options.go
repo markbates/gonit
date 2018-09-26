@@ -8,5 +8,8 @@ type Options struct {
 
 // Validate that options are usuable
 func (opts *Options) Validate() error {
-	return nil
+	if opts.Options == nil {
+		opts.Options = &initgen.Options{}
+	}
+	return opts.Options.Validate()
 }
